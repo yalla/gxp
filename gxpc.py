@@ -46,7 +46,8 @@ if len(sys.argv) == 2 and sys.argv[1] == "prompt":
     os._exit(prompt())
     
 def import_safe_pickler():
-    import cPickle,pickle
+    import _pickle as cPickle
+    import pickle
     try:
         cPickle.dumps(None)
         return cPickle

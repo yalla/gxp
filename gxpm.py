@@ -23,7 +23,7 @@ def import_safe_pickler():
     import cPickle if it exists.
     otherwise resort to pickle.
     """
-    import cPickle,pickle
+    import _pickle as cPickle
     try:
         cPickle.dumps(None)
         return cPickle

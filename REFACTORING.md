@@ -8,8 +8,9 @@ This document tracks the status & efforts.
 
 # Things to do for Python3 refactoring
 
-[x] Replace all instance of the pattern `except select.error,e` with `except select.error as e`
-[ ] Replace `cPickle` imports with `import _pickle as cPickle`
-[ ] Fix key-lookups in dictionary
-[ ] replace all occurences of `string.atoi()` with simple `int()`
-[ ] put print statements in paranthesises
+* [x] Replace all instance of the pattern `except select.error,e` with `except select.error as e`
+* [x] Replace `cPickle` imports with `import _pickle as cPickle`
+* [ ] Replace `cStringIO` with `from io import StringIO as cStringIO`
+* [ ] Fix key-lookups in dictionary
+* [ ] replace all occurences of `string.atoi()` with simple `int()`
+* [ ] put print statements in paranthesises

@@ -20,7 +20,7 @@
 #
 
 import errno,os,random,re,select,socket,string,sys,time
-import cPickle
+import _pickle as cPickle
 import ifconfig2,opt2
 
 

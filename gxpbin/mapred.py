@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-import cPickle,cStringIO
+import _pickle as cPickle
+from io import StringIO as cStringIO
 import errno,heapq,os,random,re,socket,stat,string,sys
 
 dbg=0

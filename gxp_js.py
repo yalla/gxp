@@ -8,7 +8,8 @@
 import errno,heapq,math,os,random,re,select,signal,socket,string,sys,time,types
 import gxpc,gxpm,ioman,opt
 
-import cPickle,cStringIO
+import _pickle as cPickle
+from io import StringIO as cStringIO
 
 dbg=0
 
