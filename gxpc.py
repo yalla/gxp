@@ -747,7 +747,7 @@ class session_state:
                       self.peer_tree_count))
             pickler.dump(self, wp)
             wp.close()
-            os.chmod(rand_file, 0600)
+            os.chmod(rand_file, 0o0600)
             os.rename(rand_file, self.filename)
             if self.peer_tree is None:
                 Es("gxpc: suggest gxpc ping\n")
@@ -765,7 +765,7 @@ class e_cmd_opts(opt.cmd_opts):
         #   f : float
         #   l : list of strings
         #   None : flag
-	opt.cmd_opts.__init__(self)
+        opt.cmd_opts.__init__(self)
         self.pty      = (None, 0)
         self.up       = ("s*", [])
         self.down     = ("s*", [])

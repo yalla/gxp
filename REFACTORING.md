@@ -13,6 +13,7 @@ This document tracks the status & efforts.
 * [ ] Fix key-lookups in dictionary
 * [ ] replace all occurences of `string.atoi()` with simple `int()`
 * [x] put print statements in paranthesises
+* [ ] Fix 'leading zeros in decimal integer literals are not permitted' error in file permissions (octal)
 
 # FIXMEs
 
