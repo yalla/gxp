@@ -145,7 +145,7 @@ class graph_parse:
         if s is None:
             fp = None
         else:
-            fp = cStringIO.StringIO(s)
+            fp = io.StringIO(s)
         x = self.parse(fp)
         if fp: fp.close()
         return x

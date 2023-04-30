@@ -216,10 +216,10 @@ class Env(object):
                                        ["exit-silently", "vip-users", "ignore-users", "help", "attach"])
         except getopt.GetoptError:
             self.usage()
-            print "(Given option: ",
+            print("(Given option: ")
             for a in args[1:]:
-                print '"%s" '%(a),
-            print ")"
+                print('"%s" '%(a))
+            print(")")
             sys.exit(2)
 
         for o, a in opts:
@@ -253,19 +253,19 @@ class Env(object):
 
 
     def usage(self):
-        print "Usage: nicer [options] command\n"
-        print " Options: "
-        print "     -a, --attach PATTERN    : Attach to processes whose names match to the PATTERN"
-        print "     -i, --ignore-users USER1,USER2,... : Ignore specified users. "
-        print "     -v, --vip-users USER1,USER2,...    : "
-        print "     -h, --help : Show this help"
-        print ""
+        print("Usage: nicer [options] command\n")
+        print(" Options: ")
+        print("     -a, --attach PATTERN    : Attach to processes whose names match to the PATTERN")
+        print("     -i, --ignore-users USER1,USER2,... : Ignore specified users. ")
+        print("     -v, --vip-users USER1,USER2,...    : ")
+        print("     -h, --help : Show this help")
+        print("")
 
         
 
     def printOpts(self):
         for a in self.__dict__:
-            print a,self.__dict__[a]
+            print(a,self.__dict__[a])
         
 
     def cmd_exist(self, cmd):
@@ -334,7 +334,7 @@ def test():
     env.printOpts()
     w = W(env)
     w.update()
-    print "nusers = ", w.nUsers
+    print("nusers = " + w.nUsers)
 
 
 

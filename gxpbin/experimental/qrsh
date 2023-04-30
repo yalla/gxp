@@ -21,12 +21,12 @@ def main():
         time.sleep(10)
 
 def print_info(status):
-    print '%s: %s' % (status, sys.argv[-1])
+    print('%s: %s' % (status, sys.argv[-1]))
     fd = open(sys.argv[-1])
     cmd = fd.readlines()
     fd.close()
     fd = os.popen(''.join(filter(lambda x: '/usr/bin/printf' in x, cmd)))
-    print fd.read()
+    print(fd.read())
 
 def good(signum, frame):
     print_info('Good')

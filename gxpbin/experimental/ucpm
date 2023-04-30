@@ -685,7 +685,10 @@ class Schedule:
 
         for trans,bw in self.transfers.items():
             if bw > 0.1:
-                print >> fp, trans[0], trans[1], "%.1f"%bw
+                #print >> fp, trans[0], trans[1], "%.1f"%bw
+                # not sure if this will work
+                print(trans[0], trans[1], "%.1f"%bw, file=fp)
+
         
 
 class MulticastPlanner:
@@ -703,7 +706,8 @@ class MulticastPlanner:
                 os._exit(1)
         for d in self.dests:
             if d not in self.top.computers:
-                print >> sys.stderr, "%s is not in the topology file\n"%(d)
+                #print >> sys.stderr, "%s is not in the topology file\n"%(d)
+                print("%s is not in the topology file\n"%(d), file=sys.stderr)
                 sys.exit(1)
             
         self.schedule = Schedule(self.srcs, self.top, self.bws)
@@ -946,7 +950,7 @@ private:
             for h in hosts:
                 if ptn.match(h):
                     if h in ret:
-                        print h, ret
+                        print(h, ret)
                         raise EnvException("Multiple expresstions is matched to one host(%s)"%h)
                     ret[h] = path
         # Source spec
@@ -1026,7 +1030,8 @@ class UCPMaster:
                 if v < 1: continue
                 dv = float(v) / 1000
                 #print >> sys.stderr, "edge %s -> %s dia=%f label=%dMbps end"%(s,d,dv,v)
-                print >> fp, "edge %s -> %s dia=%f end"%(s,d,v)
+                # print >> fp, "edge %s -> %s dia=%f end"%(s,d,v)
+                print("edge %s -> %s dia=%f end"%(s,d,v), file=fp)
                 #print >> sys.stderr, "edge %s -> %s end"%(s,d)
             fp.close()
         
@@ -1434,7 +1439,7 @@ class UCPMaster:
 
 
 def usage(fp = sys.stderr):
-    print >> fp, """\
+    print("""\
 Usage: gxpc mw ucp [OPTIONS] SRC_URI DEST_URI_0 DEST_URI_1 ...
 
 The ucp tool copies a file from one source to many other nodes.
@@ -1454,7 +1459,7 @@ Options
 File specification
 [hostname_pattern]:[file_path]
 
-"""
+""", file=fp)
 #-a, --actives  HOSTS_FILE     : Specify the host file                 (Default: read from GXP)
 
 

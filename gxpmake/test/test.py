@@ -25,9 +25,9 @@ def main():
     my_sys("cat %s > %s.out" % (" ".join(F), random_file))
     if my_sys("diff %s %s.out" % (random_file, random_file)) == 0:
         # my_sys("rm -f %s" % " ".join(F))
-        print "OK"
+        print("OK")
     else:
-        print "NG"
+        print("NG")
 
 if __name__ == "__main__":
     main()

@@ -749,7 +749,7 @@ def main():
 
 def tasks_test(fn):
     tmpdir,T,name_to_task = read_task_file(fn)
-    print tmpdir, T
+    print(tmpdir, T)
      #status = Status("status")
      #tasks = Tasks("tasks", status)
      #tasks.printall()

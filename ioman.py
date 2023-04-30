@@ -2635,7 +2635,7 @@ def test_achan():
     so.listen(1)
     ch = achannel(primitive_channel_socket(so, 1))
     m.add_rchannel(ch)
-    print so.getsockname()
+    print(so.getsockname())
     m.process_an_event()
 
 def mk_msg(data):
@@ -2651,7 +2651,7 @@ def test_recv_msg():
     ch.set_expected([("M",)])
     m.add_rchannel(ch)
     ch,ev = m.process_an_event()
-    print "got %s <%s>" % (ev.kind, ev.data)
+    print("got %s <%s>" % (ev.kind, ev.data))
 
 def test_recv_lines():
     global dbg
@@ -2664,7 +2664,7 @@ def test_recv_lines():
     while 1:
         ch,ev = m.process_an_event()
         if ev.kind == ch_event.EOF: break
-        print "got %s <%s>" % (ev.kind, ev.data)
+        print("got %s <%s>" % (ev.kind, ev.data))
 
 if 0 and __name__ == "__main__":
     # just for test

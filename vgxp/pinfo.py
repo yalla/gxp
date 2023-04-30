@@ -30,7 +30,7 @@ class procinfo:
 
 class pinfo_default_log_handler:
     def handle_log ( self, line ):
-        print line
+        print(line)
         sys.stdout.flush ()
 
 class pinfo_common:

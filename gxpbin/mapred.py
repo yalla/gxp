@@ -495,10 +495,10 @@ class test_record_stream_test:
             S.append(s)
         S = string.join(S, "")
         if ans == S:
-            print "OK ", seed, n
+            print("OK " + seed + n)
             return 1
         else:
-            print "NG ", seed, n, O
+            print("NG " + seed + n + O)
             return 0
         
     def read_from_to_test(self, filename, terminator):

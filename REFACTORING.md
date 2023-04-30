@@ -10,7 +10,10 @@ This document tracks the status & efforts.
 
 * [x] Replace all instance of the pattern `except select.error,e` with `except select.error as e`
 * [x] Replace `cPickle` imports with `import _pickle as cPickle`
-* [ ] Replace `cStringIO` with `from io import StringIO as cStringIO`
 * [ ] Fix key-lookups in dictionary
 * [ ] replace all occurences of `string.atoi()` with simple `int()`
-* [ ] put print statements in paranthesises
+* [x] put print statements in paranthesises
+
+# FIXMEs
+
+* [ ] Replace `cStringIO` with `from io import StringIO as cStringIO`; this is not a simple drop-in relplacement, the namespace is much different and all lines have to be inspected carefully. Later. Might already made a mistake, needs correction later.

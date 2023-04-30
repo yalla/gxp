@@ -551,7 +551,7 @@ def main():
     def usage():
         msg  = " Usage: gxpc e gather [-f] SRC_DIR DEST_HOST:PORT:DIR\n"
         msg += "  Copy every file to DEST_HOSTNAME \n"
-        print msg
+        print(msg)
         
     src_dirname,dest_hostname,dest_port,dest_dirname,force_flag = parse_args()
     dest_addr = socket.gethostbyname(dest_hostname)
