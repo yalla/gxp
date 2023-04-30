@@ -140,7 +140,7 @@ def Es(s):
         try:
             os.write(2, s)
             break
-        except OSError,e:
+        except OSError as e:
             if e.args[0] != errno.EINTR: raise
 
 def Ws(s):
@@ -148,7 +148,7 @@ def Ws(s):
         try:
             os.write(1, s)
             break
-        except OSError,e:
+        except OSError as e:
             if e.args[0] != errno.EINTR: raise
 
 class xmake_cmd_opts(opt2.cmd_opts):
@@ -813,7 +813,7 @@ class Work:
             try:
                 self.conn.send(msg)
                 self.conn.close()
-            except socket.error,e:
+            except socket.error as e:
                 if e.args[0] == errno.EPIPE or e.args[0] == errno.EBADF:
                     Es("xmake: could not send result to client: %s\n"
                        % (e.args,))
@@ -823,7 +823,7 @@ class Work:
             assert termsig is not None
             try:
                 os.kill(self.mksh_pid, termsig)
-            except OSError,e:
+            except OSError as e:
                 if e.args[0] == errno.ESRCH:
                     Es("xmake: could not send result to client: %s\n"
                        % (e.args,))
@@ -859,7 +859,7 @@ current dir. Both are read (if exist) and the latter overrides the former.
         if not os.path.exists(conf_file): return -1
         try:
             fp = open(conf_file, "rb")
-        except IOError,e:
+        except IOError as e:
             Es("xmake: failed to open %s %s\n" % (conf_file, e.args))
             return
         for line in fp.readlines():
@@ -899,7 +899,7 @@ class ping_men:
                            " trying to kill it\n" % self.pid)
             try:
                 os.kill(self.pid, signal.SIGKILL)
-            except OSError,e:
+            except OSError as e:
                 if server.logfp:
                     server.LOG("os.kill: %s\n" % (e.args,))
             return 0
@@ -2261,7 +2261,7 @@ class xmake_server:
     def safe_int(self, x):
         try:
             return int(x)
-        except ValueError,e:
+        except ValueError as e:
             return None
 
     def parse_args(self, sys_argv):
@@ -2315,7 +2315,7 @@ class xmake_server:
             log = os.path.join(self.opts.state_dir, self.opts.log)
             try:
                 self.logfp = open(log, "wb")
-            except Exception,e:
+            except Exception as e:
                 Es("xmake: %s : %s\n" % (log, e.args,))
                 return -1
         if self.logfp:
@@ -2367,7 +2367,7 @@ class xmake_server:
         try:
             os.mkdir(dire, 0700)
             ok = 1
-        except OSError,e:
+        except OSError as e:
             if e.args[0] == errno.EEXIST:
                 ok = 1
             else:
@@ -2437,7 +2437,7 @@ class xmake_server:
         while 1:
             try:
                 R,_,_ = select.select(F, W, E, 0.0)
-            except select.error,e:
+            except select.error as e:
                 if e.args[0] == errno.EINTR:
                     continue    # retry
                 else:
@@ -2445,7 +2445,7 @@ class xmake_server:
             if len(R) == 0: return ""
             try:
                 return os.read(fd, 100000)
-            except IOError,e:
+            except IOError as e:
                 if e.args[0] == errno.EINTR:
                     continue    # retry
                 else:
@@ -2483,7 +2483,7 @@ class xmake_server:
         while r > 0:
             try:
                 m = conn.recv(r)
-            except socket.error,e:
+            except socket.error as e:
                 if e.args[0] == errno.EINTR:
                     continue
                 else:
@@ -2578,7 +2578,7 @@ class xmake_server:
             try:
                 R = []
                 R,_,_ = select.select([self.so], [], [], 0.0)
-            except select.error,e:
+            except select.error as e:
                 if e.args[0] == errno.EINTR:
                     if self.logfp:
                         self.LOG("select interrupted in recv_works\n")
@@ -2727,12 +2727,12 @@ class xmake_server:
         while r > 0:
             try:
                 a = os.read(fd, r)
-            except IOError,e:
+            except IOError as e:
                 if e.args[0] == errno.EINTR:
                     continue    # retry
                 else:
                     raise
-            except OSError,e:
+            except OSError as e:
                 if e.args[0] == errno.EINTR:
                     continue    # retry
                 else:
@@ -2763,7 +2763,7 @@ class xmake_server:
             try:
                 R = []
                 R,_,_ = select.select([ fd ], [], [], 0.0)
-            except select.error,e:
+            except select.error as e:
                 if e.args[0] == errno.EINTR:
                     if self.logfp:
                         self.LOG("select interrupted in recv_job_io\n")
@@ -2870,7 +2870,7 @@ class xmake_server:
         try:
             R,_,_ = select.select([ fd ], [], [], 0.0)
             if len(R) > 0: return 1
-        except select.error,e:
+        except select.error as e:
             if e.args[0] != errno.EINTR: raise
         return 0
                     
@@ -3020,7 +3020,7 @@ class xmake_server:
         shine = os.path.join(self.opts.state_dir, self.opts.shine_file)
         try:
             st = os.stat(shine)
-        except OSError,e:
+        except OSError as e:
             return
         mtime = st[stat.ST_MTIME]
         if self.time_start < mtime:
@@ -3035,14 +3035,14 @@ class xmake_server:
             try:
                 result = fp.read()
                 break
-            except OSError,e:
+            except OSError as e:
                 if e.args[0] != errno.EINTR: raise
-            except IOError,e:
+            except IOError as e:
                 if e.args[0] != errno.EINTR: raise
         result = string.strip(result)
         try:
             result = float(result)
-        except ValueError,e:
+        except ValueError as e:
             return -1
         return result / 1024.0
 
@@ -3057,15 +3057,15 @@ class xmake_server:
             try:
                 result = fp.read()
                 break
-            except OSError,e:
+            except OSError as e:
                 if e.args[0] != errno.EINTR: raise
-            except IOError,e:
+            except IOError as e:
                 if e.args[0] != errno.EINTR: raise
         m = re.search("load average: ([^,]*),", result)
         if m is None: return -1
         try:
             return float(m.group(1))
-        except ValueError,e:
+        except ValueError as e:
             return -1
 
     def record_loadavg(self, cur_time, force):
@@ -3164,7 +3164,7 @@ class xmake_server:
             x = os.write(self.child_wfd, "x")
             assert x == 1
             self.n_sigchild_written = self.n_sigchild_written + 1
-        except OSError,e:
+        except OSError as e:
             if e.args[0] == errno.EBADF:
                 if self.logfp:
                     self.LOG("sigchld failed to write\n")
@@ -3206,7 +3206,7 @@ class xmake_server:
         a = ""
         try:
             a = os.read(self.child_rfd, x)
-        except IOError,e:
+        except IOError as e:
             if e.args[0] == errno.EINTR:
                 if self.logfp:
                     self.LOG("read interrupted\n")
@@ -3221,7 +3221,7 @@ class xmake_server:
         while 1:
             try:
                 pid,status = os.waitpid(-1, os.WNOHANG)
-            except OSError,e:
+            except OSError as e:
                 if e.args[0] == errno.ECHILD: break
                 raise
             if pid == 0: break
@@ -3277,7 +3277,7 @@ class xmake_server:
                          % self.gxpc_pid)
             try:
                 os.kill(self.gxpc_pid, signal.SIGTERM)
-            except OSError,e:
+            except OSError as e:
                 if e.args[0] == errno.ESRCH: 
                     self.LOG("no such process %s\n"
                              % self.gxpc_pid)
@@ -3290,7 +3290,7 @@ class xmake_server:
                          % self.make_pid)
             try:
                 os.kill(self.make_pid, signal.SIGTERM)
-            except OSError,e:
+            except OSError as e:
                 if e.args[0] == errno.ESRCH: 
                     self.LOG("no such process %s\n"
                              % self.make_pid)
@@ -3416,7 +3416,7 @@ class xmake_server:
         R = []
         try:
             R,_,_ = select.select(F, [], [], timeout)
-        except select.error,e:
+        except select.error as e:
             if e.args[0] == errno.EINTR:
                 if self.logfp:
                     self.LOG("select interrupted\n")
@@ -3450,7 +3450,7 @@ class xmake_server:
     def ensure_directory(self, dire):
         try:
             os.mkdir(dire)
-        except OSError,e:
+        except OSError as e:
             if e.args[0] == errno.EEXIST:
                 pass
             else:
@@ -3464,7 +3464,7 @@ class xmake_server:
         try:
             os.kill(pid, 0)
             return 1
-        except OSError,e:
+        except OSError as e:
             if e.args[0] == errno.ESRCH: return 0
             raise
 

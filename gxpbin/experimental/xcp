@@ -200,7 +200,7 @@ def connect(nextNodeAddr):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         sock.connect(nextNodeAddr)
-    except socket.error, e:
+    except socket.error as e:
         Es('connect() to %s error %s\n' % (nextNodeAddr, e))
         sys.exit(2)
     return sock

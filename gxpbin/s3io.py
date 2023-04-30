@@ -352,7 +352,7 @@ class S3IOBenchmark:
                     replace=self.args.overwrite,
                     cb=None, num_cb=10, policy=None, md5=None, reduced_redundancy=True,
                     encrypt_key=False)
-            except Exception, msg:
+            except Exception as msg:
                 self.info("Write timed out!! %s" % msg)
                 signal.alarm(0)
                 continue
@@ -377,7 +377,7 @@ class S3IOBenchmark:
                     signal.signal(signal.SIGALRM, signal_handler)
                     signal.alarm(self.args.timeout)
                     k.get_file(f)
-                except Exception, msg:
+                except Exception as msg:
                     self.info("Read timed out!! %s" % msg)
                     signal.alarm(0)
                     continue

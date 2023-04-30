@@ -398,7 +398,7 @@ class UCPWorker:
                         self.accept()
                     else:
                         self.recv_data(fd)
-        except socket.error,e:
+        except socket.error as e:
             #M(str(e))
             sys.exit(0)
             

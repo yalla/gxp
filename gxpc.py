@@ -339,13 +339,13 @@ class session_state:
         if mask is not None:
             try:
                 pat = re.compile(mask)
-            except Exception,e:
+            except Exception as e:
                 Es("gxpc: invalid %s '%s' %s\n" % (name, mask, e.args))
                 return None
         elif negmask is not None:
             try:
                 neg_pat = re.compile(negmask)
-            except Exception,e:
+            except Exception as e:
                 Es("gxpc: invalid %s '%s' %s\n" % (negname, e.args))
                 return None
             pat = re.compile("(?!(%s))" % negmask)
@@ -930,7 +930,7 @@ class hosts_parser_base:
     def safe_atoi(self, x, defa):
         try:
             return string.atoi(x)
-        except ValueError,e:
+        except ValueError as e:
             return defa
 
     def parse_error(self):
@@ -968,7 +968,7 @@ class hosts_parser_base:
         fp = None
         try:
             fp = open(filename, "rb")
-        except IOError,e:
+        except IOError as e:
             if signal_error:
                 Es("gxpc: %s: %s\n" % (filename, e.args))
         if fp is not None:
@@ -1527,7 +1527,7 @@ class cmd_interpreter:
         """
         try:
             fp = open(filename, "rb")
-        except OSError,e:
+        except OSError as e:
             Es("%s\n" % (e.args,))
             return None
         m = re.search("(\d+)/(\d+)/(\d+)", fp.readline())
@@ -1539,11 +1539,11 @@ class cmd_interpreter:
         if full:
             try:
                 session = pickler.load(fp)
-            except pickler.UnpicklingError,e:
+            except pickler.UnpicklingError as e:
                 Es("%s\n" % (e.args,))
                 fp.close()
                 return None
-            except AttributeError,e:
+            except AttributeError as e:
                 Es("%s\n" % (e.args,))
                 fp.close()
                 return None
@@ -1576,7 +1576,7 @@ class cmd_interpreter:
                     so = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
                     so.connect(daemon_addr_path)
                     break
-                except socket.error,e:
+                except socket.error as e:
                     Es(("gxpc: warning failed to connect to gxpd (%s), retry %s\n"
                         % (daemon_addr_path, e.args)))
                     so.close()
@@ -1621,7 +1621,7 @@ class cmd_interpreter:
         try:
             os.mkdir(d)
             return 0
-        except OSError,e:
+        except OSError as e:
             pass
         if os.path.isdir(d): return 0
         if os.path.exists(d):
@@ -1638,13 +1638,13 @@ class cmd_interpreter:
         try:
             os.kill(pid, 0)
             return 1
-        except OSError,e:
+        except OSError as e:
             return 0
 
     def safe_stat(self, file):
         try:
             return os.stat(file)
-        except OSError,e:
+        except OSError as e:
             if e.args[0] == errno.ENOENT:
                 return None
             else:
@@ -1654,7 +1654,7 @@ class cmd_interpreter:
         if os.path.exists(filename):
             try:
                 os.remove(filename)
-            except OSError,e:
+            except OSError as e:
                 Es("gxpc: %s %s\n" % (filename, e.args,))
         
     def safe_remove_if_empty(self, filename):
@@ -1865,7 +1865,7 @@ class cmd_interpreter:
             Es("gxpc: session pattern to search for is %s\n" % session_pat_str)
         try:
             return re.compile(session_pat_str)
-        except ValueError,e:
+        except ValueError as e:
             Es("gxpc: %s %s\n" % (session_pat_str, e.args))
             return None
         
@@ -1899,7 +1899,7 @@ class cmd_interpreter:
             Es("gxpc: daemon addr pattern to search for is %s\n" % daemon_pat_str)
         try:
             return re.compile(daemon_pat_str)
-        except ValueError,e:
+        except ValueError as e:
             Es("gxpc: wrong daemon address pattern %s %s\n" 
                % (daemon_pat_str, e.args))
             return None
@@ -2324,7 +2324,7 @@ class cmd_interpreter:
         try:
             fp.write(s)
             if self.opts.buffer == 0: fp.flush()
-        except IOError,e:
+        except IOError as e:
             if e.args[0] == errno.EPIPE:
                 return -1
             else:
@@ -2341,7 +2341,7 @@ class cmd_interpreter:
                 # (not immediately). perhaps it is a msg from
                 # python finalizer?
                 # os.close(fp.fileno())
-        except IOError,e:
+        except IOError as e:
             if e.args[0] == errno.EPIPE:
                 return -1
             else:
@@ -2513,7 +2513,7 @@ class cmd_interpreter:
         self.so_lock.acquire()
         try:
             self.asend_locked(str)
-        except socket.error,e:
+        except socket.error as e:
             self.so_lock.release()
             if e.args[0] == errno.EPIPE \
                or e.args[0] == errno.ECONNRESET \
@@ -2661,7 +2661,7 @@ class cmd_interpreter:
                     return cmd_interpreter.RECV_QUIT
                 if (time_limit is not None) and (time.time() > time_limit):
                     return cmd_interpreter.RECV_TIMEOUT
-        except KeyboardInterrupt,e:
+        except KeyboardInterrupt as e:
             return cmd_interpreter.RECV_INTERRUPTED
 
     def send_action(self, tgt, tid, act, persist, keep_connection):
@@ -3520,7 +3520,7 @@ See Also:
     def safe_atoi(self, x, defa):
         try:
             return string.atoi(x)
-        except ValueError,e:
+        except ValueError as e:
             return defa
 
     def do_ping_cmd(self, args):
@@ -3826,7 +3826,7 @@ See Also:
     def check_fd_readable(self, fd):
         try:
             select.select([ fd ], [], [], 0.0)
-        except select.error,e:
+        except select.error as e:
             if e.args[0] == errno.EBADF:
                 return 0
             else:
@@ -3836,7 +3836,7 @@ See Also:
     def check_fd_writable(self, fd):
         try:
             select.select([], [ fd ], [], 0.0)
-        except select.error,e:
+        except select.error as e:
             if e.args[0] == errno.EBADF:
                 return 0
             else:
@@ -3916,7 +3916,7 @@ See Also:
         try:
             os.wait()
             return 0
-        except KeyboardInterrupt,e:
+        except KeyboardInterrupt as e:
             return -1
 
     def die_with_sigint(self):
@@ -4518,13 +4518,13 @@ See Also:
         for a in rsh_args:
             try:
                 subst_a = (a % dic)
-            except KeyError,e:
+            except KeyError as e:
                 p = e.args[0]
                 Es(("gxpc: a=%s parameter '%s' specified in rsh (try 'gxpc rsh %s') missing\n"
                     "in explore command line (give it by 'gxpc explore -a %s=X ...')\n"
                     % (a, p, method_name, p)))
                 return None
-            except ValueError,e:
+            except ValueError as e:
                 Es(("gxpc: parameter substitution of '%s' failed %s\n"
                     % (a, e.args)))
                 return None

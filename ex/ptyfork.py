@@ -39,7 +39,7 @@ def safe_read(fd, bytes, timeout, show_error):
         return None
     try:
         return os.read(fd, bytes)
-    except OSError,e:
+    except OSError as e:
         if show_error:
             os.write(2, "error: %s\n" % e.args[1])
         return None
@@ -54,7 +54,7 @@ def safe_write(fd, str, timeout, show_error):
         return None
     try:
         return os.write(fd, str)
-    except OSError,e:
+    except OSError as e:
         if show_error:
             os.write(2, "error: %s\n" % e.args[1])
         return None
@@ -65,12 +65,12 @@ def cleanup(pid):
     """
     try:
         os.kill(pid, 0)
-    except OSError,e:
+    except OSError as e:
         if e.args[0] == errno.ESRCH:    # no such process
             return
     try:
         os.kill(pid, signal.SIGKILL)
-    except OSError,e:
+    except OSError as e:
         if e.args[0] == errno.ESRCH:    # no such process
             return
 

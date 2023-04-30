@@ -31,7 +31,7 @@ import fcntl,os,re,socket,string,sys
 try:
     import ioman
     # gxp3 directory is in your PYTHONPATH
-except ImportError,e:
+except ImportError as e:
     # gxp3 directory not in your PYTHONPATH
     # perhaps run as a standalone program
     ioman = None
@@ -61,7 +61,7 @@ class ifconfig:
         A,B,C,D = m.group(1,2,3,4)
         try:
             return string.atoi(A),string.atoi(B),string.atoi(C),string.atoi(D)
-        except ValueError,e:
+        except ValueError as e:
             return None
 
     def is_localhost_ip_addr(self, addr):
@@ -179,7 +179,7 @@ class ifconfig:
         hostname = socket.gethostname()
         try:
             can_name,aliases,ip_addrs = socket.gethostbyname_ex(hostname)
-        except socket.error,e:
+        except socket.error as e:
             return []
         return ip_addrs
         
@@ -279,7 +279,7 @@ class ifconfig:
             else:
                 try:
                     c = re.compile(pat)
-                except re.error,e:
+                except re.error as e:
                     msg = ("invalid addr_prio %s in %s %s"
                            % (pat, addr_prio_str, e.args))
                     return None,msg
@@ -395,7 +395,7 @@ class cmd_opts:
         short,long = self.get_options()
         try:
             opts,args = getopt.getopt(argv, short, long)
-        except getopt.error,e:
+        except getopt.error as e:
             self.Es("%s\n" % e.args[0])
             return -1
         for opt,arg in opts:
@@ -901,7 +901,7 @@ qsub_wrap hostname
                 if fd > 2: os.close(fd)
             try:
                 os.execvp(args[0], args)
-            except OSError,e:
+            except OSError as e:
                 Es("%s : %s (%s) : could not exec %s %s\n" \
                    % (self.cmd, self.hostname, self.connect_addr,
                       args, e.args))
@@ -994,7 +994,7 @@ qsub_wrap hostname
                 os.mkdir(directory)
             else:
                 os.mkdir(directory, mode)
-        except OSError,e:
+        except OSError as e:
             if e.args[0] != errno.EEXIST:
                 Es("%s : %s\n" % (self.cmd, e.args))
                 return -1               # NG
@@ -1036,7 +1036,7 @@ qsub_wrap hostname
             # create directory
             try:
                 fd = os.open(script, os.O_WRONLY | os.O_CREAT | os.O_EXCL)
-            except OSError,e:
+            except OSError as e:
                 if e.args[0] == errno.EEXIST:
                     continue
                 else:
@@ -1183,7 +1183,7 @@ qsub_wrap hostname
                 if dbg>=2:
                     Es("%s : removing %s\n" % (self.cmd, filename))
                 os.remove(filename)
-            except OSError,e:
+            except OSError as e:
                 if dbg>=1:
                     Es("%s : %s %s (ignored)\n" % (self.cmd, filename, e.args,))
         
@@ -1372,7 +1372,7 @@ qsub_wrap hostname
                     fp.close()
                     if content: continue
                 time.sleep(1.0)
-            except KeyboardInterrupt,e:
+            except KeyboardInterrupt as e:
 	        pass
             files.append((label, f))
         Es(string.join(A, ""))
@@ -1391,7 +1391,7 @@ qsub_wrap hostname
             self.run_qsub_process(self.connect_addr, port, hello)
             if self.job_id is None: return 1
             ng = self.talk_to_qsub_process(so, hello)
-        except KeyboardInterrupt,e:
+        except KeyboardInterrupt as e:
 	    Es("qsub_wrap: got KeyboardInterrupt\n")
 
 	if ng:

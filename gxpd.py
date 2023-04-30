@@ -494,7 +494,7 @@ class gxpd(ioman.ioman):
         try:
             # os.makedirs(directory, 0777)
             os.makedirs(directory, 0700)
-        except OSError,e:
+        except OSError as e:
             if e.args[0] == errno.EEXIST:
                 pass
             else:
@@ -1088,7 +1088,7 @@ class gxpd(ioman.ioman):
             ex_dir = os.path.expanduser(os.path.expandvars(dir))
             os.chdir(ex_dir)
             ok = 1
-        except OSError,e:
+        except OSError as e:
             pass
         if ok:
             i = gxpm.event_info(0, "")
@@ -1113,7 +1113,7 @@ class gxpd(ioman.ioman):
             ex_val = os.path.expanduser(os.path.expandvars(val))
             os.environ[ex_var] = ex_val
             ok = 1
-        except OSError,e:
+        except OSError as e:
             pass
         if ok:
             i = gxpm.event_info(0, "")
@@ -1404,7 +1404,7 @@ class gxpd(ioman.ioman):
         else:
             try:
                 return string.atoi(sig)
-            except ValueError,e:
+            except ValueError as e:
                 return None
 
     def try_kill(self, pid, signum):
@@ -1414,7 +1414,7 @@ class gxpd(ioman.ioman):
         try:
             os.kill(pid, signum)
             return None
-        except OSError,e:
+        except OSError as e:
             return "%s" % (e,)
 
     def try_killpg(self, pid, signum):
@@ -1424,7 +1424,7 @@ class gxpd(ioman.ioman):
         try:
             os.killpg(pid, signum)
             return None
-        except OSError,e:
+        except OSError as e:
             return "%s" % (e,)
 
     def do_action_sig(self, task, parent, down_m, tgt, action):
@@ -1848,7 +1848,7 @@ class gxpd(ioman.ioman):
         af = socket.AF_INET
         try:
             a = socket.gethostbyname(host)
-        except socket.gaierror,e:
+        except socket.gaierror as e:
             a = addr
         port = int(port)
         # socket.AF_INET,"123.234.78.89",10230
@@ -2281,7 +2281,7 @@ class gxpd(ioman.ioman):
                     os.rmdir(f)
                 else:
                     os.remove(f)
-            except EnvironmentError,e:
+            except EnvironmentError as e:
                 if dbg>=1:
                     ioman.LOG("could not remove %s %s\n" \
                               % (f, e.args))
@@ -2319,7 +2319,7 @@ class gxpd(ioman.ioman):
     def main(self, argv):
         try:
             self.main_no_cleanup(argv)
-        except Exception,e:
+        except Exception as e:
             ioman.LOG("gxpd.py terminated with an exception:\n")
             ioman.LOG("%s\n" % self.get_exception_trace())
         self.cleanup()

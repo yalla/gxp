@@ -110,7 +110,7 @@ class Communicator: # OK
                 # the worker appears to hang (deadlocks?)...
                 # time.sleep(0.5)
                 
-        except IOError,e:
+        except IOError as e:
             Es("%s: IOError occurred \n"%(self.name))
             sys.exit(1)
         self.task_q.put((None, None))
@@ -170,7 +170,7 @@ class Sender:
                     self.process_send(args, taskname)
                 else: 
                     assert False
-        except IOError,e:
+        except IOError as e:
             Es("%s : IOError\n" % self.comm.name)
 
 
@@ -256,7 +256,7 @@ class Receiver:
                 else:
                     Es("%s: invalid cmd(%s) in the recv_q\n"%(self.comm.name,cmd))
                     assert False
-        except IOError,e:
+        except IOError as e:
             Es("%s : IOError\n" % self.comm.name)
 
 
@@ -471,7 +471,7 @@ class Worker:
                     if os.path.exists(filepath):
                         os.remove(filepath) 
             
-        except IOError,e:
+        except IOError as e:
             Es("%s : IOError\n" % self.comm.name)
             self.comm.write("")
             pass

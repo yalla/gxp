@@ -145,7 +145,7 @@ You may need some practices to get used to shell escape characters.
         self.eval_builtins()
         try:
             r = eval(expr)
-        except Exception,e:
+        except Exception as e:
             r = 0
             Es("%s in expression:\n\t%s\n" \
                % (e.args[0], expr))

@@ -60,7 +60,7 @@ def ensure_dir_1(my_host, dir, opts):
     try:
         os.mkdir(dir)
         return 0
-    except OSError,e:
+    except OSError as e:
         if e.args[0] == errno.EEXIST:
             return 0
         else:
@@ -135,7 +135,7 @@ def get_target_ip_address(target_host, my_host):
     for h in [ target_host.f, target_host.h ]:
         try:
             return socket.gethostbyname(h)
-        except socket.gaierror,e:
+        except socket.gaierror as e:
             pass
     for i in target_host.I:
         return i

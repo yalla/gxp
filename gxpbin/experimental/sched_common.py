@@ -173,7 +173,7 @@ class ServerSocket:
         for self.port in range(initial_port, 65535):
             try:
                 self.sock.bind((socket.gethostbyname(socket.gethostname()), self.port))
-            except socket.error, msg:
+            except socket.error as msg:
                 #Es("Err: on bind(): %s\n"%msg)
                 continue
             break
@@ -251,7 +251,7 @@ class ifconfig:
         A,B,C,D = m.group(1,2,3,4)
         try:
             return string.atoi(A),string.atoi(B),string.atoi(C),string.atoi(D)
-        except ValueError,e:
+        except ValueError as e:
             return None
 
     def is_global_ip_addr(self, addr):
@@ -349,7 +349,7 @@ class ifconfig:
             hostname = hint
         try:
             can_name,aliases,ip_addrs = socket.gethostbyname_ex(hostname)
-        except socket.error,e:
+        except socket.error as e:
             return []
         return ip_addrs
         
@@ -483,7 +483,7 @@ class Task:
             self.gens = opts["generate"]
             self.cmd = cmd
             
-        except IOError, e:
+        except IOError as e:
             Es("Invalid line\n")
             self.name = ""
 

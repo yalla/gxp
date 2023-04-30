@@ -58,7 +58,7 @@ class logger:
             try:
                 os.remove(self.filename)
                 self.filename = None
-            except EnvironmentError,e:
+            except EnvironmentError as e:
                 pass
         
     def set_log_header(self, header):
@@ -114,13 +114,13 @@ def apply_no_intr(f, args):
     for i in range(0, 500):
         try:
             return apply(f, args)
-        except EnvironmentError,e:
+        except EnvironmentError as e:
             pass
-        except socket.error,e:
+        except socket.error as e:
             pass
-        except select.error,e:
+        except select.error as e:
             pass
-        except KeyboardInterrupt,e:
+        except KeyboardInterrupt as e:
             keyboard = 1
             pass
         if keyboard == 0 and e.args[0] != errno.EINTR: raise
@@ -370,7 +370,7 @@ class primitive_channel_fd:
         try:
             frag = nointr_os.read(self.fd, sz)
             return len(frag),0,frag
-        except EnvironmentError,e:
+        except EnvironmentError as e:
             return -1,e.args[0],e.args[1]
     
     def write(self, frag):
@@ -381,7 +381,7 @@ class primitive_channel_fd:
         """
         try:
             return nointr_os.write(self.fd, frag),0,""
-        except EnvironmentError,e:
+        except EnvironmentError as e:
             return -1,e.args[0],e.args[1]
     
     def close(self):
@@ -416,9 +416,9 @@ class primitive_channel_socket:
         try:
             frag = self.so.nointr_recv(sz)
             return len(frag),0,frag
-        except socket.error,e:
+        except socket.error as e:
             return -1,e.args[0],e.args[1]
-        except EnvironmentError,e:
+        except EnvironmentError as e:
             return -1,e.args[0],e.args[1]
     
     def write(self, frag):
@@ -429,17 +429,17 @@ class primitive_channel_socket:
         """
         try:
             return self.so.nointr_send(frag),0,""
-        except socket.error,e:
+        except socket.error as e:
             return -1,e.args[0],e.args[1]
-        except EnvironmentError,e:
+        except EnvironmentError as e:
             return -1,e.args[0],e.args[1]
     
     def accept(self):
         try:
             conn,addr = self.so.nointr_accept()
-        except socket.error,e:
+        except socket.error as e:
             return -1,e.args[0],e.args[1]
-        except EnvironmentError,e:
+        except EnvironmentError as e:
             return -1,e.args[0],e.args[1]
         portability.set_close_on_exec_fd(conn.fileno(), 1)
         return 0,0,(conn,addr)
@@ -447,9 +447,9 @@ class primitive_channel_socket:
     def connect(self, name):
         try:
             self.so.nointr_connect(name)
-        except socket.error,e:
+        except socket.error as e:
             return -1,e
-        except EnvironmentError,e:
+        except EnvironmentError as e:
             return -1,e
         return 0,None
     
@@ -1539,7 +1539,7 @@ class rchannel_wait_child(rchannel):
             try:
                 pid,term_status = os.waitpid(-1, os.WNOHANG)
                 if pid == 0: break
-            except OSError,e:
+            except OSError as e:
                 if e.args[0] == errno.ECHILD:
                     break
                 else:
@@ -1709,7 +1709,7 @@ class pipe_constructor_sockpair(pipe_constructor):
                   random.randint(0, 1000000))
         try:
             sa.bind(name)
-        except socket.error,e:
+        except socket.error as e:
             # /tmp not writable
             if e.args[0] == errno.ENOENT or e.args[0] == errno.EACCES:
                 msg = ("could not create a socket %s %s" % (name, e))
@@ -1745,7 +1745,7 @@ class pipe_constructor_sockpair(pipe_constructor):
             try:
                 # try to increase up to sz
                 so.setsockopt(level, buftype, sz)
-            except socket.error,e:
+            except socket.error as e:
                 if e.args[0] == errno.ENOBUFS:
                     sz = (ok + sz) / 2
                 else:
@@ -2068,7 +2068,7 @@ class child_process(process_base):
             return
         try:
             resource.setrlimit(k, (soft,hard))
-        except ValueError,e:
+        except ValueError as e:
             os.write(2, 
                      "could not set resource limit %s to %s %s\n"
                      % (k, (soft, hard), e.args))
@@ -2120,7 +2120,7 @@ class child_process(process_base):
                     os.chdir(cwd)
                     errors = [] # forget past errors
                     break
-                except OSError,e:
+                except OSError as e:
                     errors.append((cwd, e))
                     continue
             if len(errors) > 0:
@@ -2142,7 +2142,7 @@ class child_process(process_base):
                     os.execvp(cmd[0], cmd)
                 else:
                     os.execvpe(cmd[0], cmd, env)
-            except OSError,e:
+            except OSError as e:
                 os._exit(child_process.exec_failed)
         else:
             # parent
@@ -2171,7 +2171,7 @@ class child_process(process_base):
             os.kill(self.pid, signal.SIGKILL)
             # os.kill(self.pid, signal.SIGINT)
             return 0
-        except OSError,e:
+        except OSError as e:
             if dbg>=2:
                 LOG("child_process.kill : failed %s\n" \
                     % (e.args,))
@@ -2185,7 +2185,7 @@ class child_process(process_base):
         try:
             os.kill(self.pid, sig)
             return 0
-        except OSError,e:
+        except OSError as e:
             if dbg>=2:
                 LOG("child_process.kill : failed %s\n" \
                     % (e.args,))

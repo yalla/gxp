@@ -40,7 +40,7 @@ def safe_mkdir(directory, mode):
             os.mkdir(directory)
         else:
             os.mkdir(directory, mode)
-    except OSError,e:
+    except OSError as e:
         if e.args[0] != errno.EEXIST: raise
     return 0
 
@@ -76,7 +76,7 @@ def mk_tmp_dir(root_directory, root_mode=None, mode=None):
                 os.mkdir(directory)
             else:
                 os.mkdir(directory, mode)
-        except OSError,e:
+        except OSError as e:
             if e.args[0] == errno.EEXIST:
                 continue
             else:
@@ -97,7 +97,7 @@ def rename_dir(root_directory, tmp_dir):
         # create directory
         try:
             os.rename(tmp_dir, directory)
-        except OSError,e:
+        except OSError as e:
             if e.args[0] == errno.EBUSY:
                 continue
             else:

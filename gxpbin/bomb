@@ -113,7 +113,7 @@ class bomber:
             content = fp.read()
             fp.close()
             return content
-        except IOError,e:
+        except IOError as e:
             return None
         
     def read_proc(self, pat, directory, pid):
@@ -147,7 +147,7 @@ class bomber:
                 procs[pid] = pi
                 try:
                     task_dirs = os.listdir("/proc/%s/task" % pid)
-                except OSError,e:
+                except OSError as e:
                     task_dirs = []
                 for tid in task_dirs:
                     ti = self.read_proc(pat, ("/proc/%s/task" % pid), tid)
@@ -287,7 +287,7 @@ class bomber:
         try:
             os.kill(pid, sig)
             return 1
-        except OSError,e:
+        except OSError as e:
             return 0
 
     def parse_opts(self, argv):

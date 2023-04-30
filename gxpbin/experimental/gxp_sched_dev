@@ -670,7 +670,7 @@ class Master:
                     Es("master: workers |free=%d, all=%d\n" %(len(self.free_hosts), self.registered_workers))
                     Es("master: tasks   |%s\n"%(self.tasks.getStatus()))
                                     
-        except IOError,e:
+        except IOError as e:
             Es("%s"%str(e))
         
         self.comm.close()

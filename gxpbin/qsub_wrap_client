@@ -106,7 +106,7 @@ class cmd_opts:
         short,long = self.get_options()
         try:
             opts,args = getopt.getopt(argv, short, long)
-        except getopt.error,e:
+        except getopt.error as e:
             self.Es("%s\n" % e.args[0])
             return -1
         for opt,arg in opts:
@@ -334,7 +334,7 @@ class qsub_wrap_client:
         [ self.addr, port_string ] = addr_port
         try:
             self.port = int(port_string)
-        except ValueError,e:
+        except ValueError as e:
             Es("%s : wrong arg to --connect_to (port must be int)\n" \
                % self.cmd)
             self.usage()
@@ -352,7 +352,7 @@ class qsub_wrap_client:
         so.setblocking(0)
         try:
             so.connect((self.addr, self.port))
-        except socket.error,e:
+        except socket.error as e:
             if e.args[0] != errno.EINPROGRESS: raise
         _,W,_ = select.select([], [so], [], timeout)
         if len(W) == 0:
@@ -363,7 +363,7 @@ class qsub_wrap_client:
         hello = ""
         try:
             hello = so.recv(len(self.opt.hello))
-        except socket.error,e:
+        except socket.error as e:
             pass
         if hello != self.opt.hello:
             Es("%s : %s : connect to %s:%d failed %s\n" % \

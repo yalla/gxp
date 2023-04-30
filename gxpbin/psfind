@@ -100,7 +100,7 @@ class psfind:
             try:
                 self.eval_builtins()
                 r = eval(expr)
-            except Exception,e:
+            except Exception as e:
                 r = 0
                 Es("%s in expression:\n\n\t%s\n\n" \
                    % (e.args[0], expr))

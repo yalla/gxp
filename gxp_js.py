@@ -1213,9 +1213,9 @@ class work_stream_fd_pair(work_stream_fd):
         try:
             os.write(fd, msg)
             return 0                    # OK
-        except OSError,e:
+        except OSError as e:
             return -1
-        except IOError,e:
+        except IOError as e:
             return -1
 
     def finish_work(self, work_idx, work, exit_status, term_sig, man_name):
@@ -1235,7 +1235,7 @@ class work_stream_file(work_stream_base):
         try:
             self.fp = open(filename)
             return 0
-        except OSError,e:
+        except OSError as e:
             Es("error: could not open work_file %s %s\n"
                % (filename, e.args))
             return -1
@@ -1268,7 +1268,7 @@ class work_stream_socket(work_stream_base):
     def safe_recv(self, so, sz):
         try:
             return so.recv(sz)  # OK
-        except socket.error,e:
+        except socket.error as e:
             if self.warnings_issued == 0:
                 Es("warning: could not send task termination notification %s, "
                    "probably the client program has gone\n" % (e.args,))
@@ -1292,7 +1292,7 @@ class work_stream_socket_bidirectional(work_stream_socket):
                 x = so.send(msg)
                 assert x == len(msg)
                 return 0                    # OK
-            except socket.error,e:
+            except socket.error as e:
                 if self.warnings_issued == 0:
                     Es("warning: could not send task termination notification %s, "
                        "probably the client program has gone\n" % (e.args,))
@@ -1354,20 +1354,20 @@ class work_stream_generator(work_stream_base):
         self.generator_module = generator_module
         try:
             mod = __import__(generator_module, globals(), locals(), [], -1)
-        except ImportError,e:
+        except ImportError as e:
             Es("error: could not import module %s %s. did you set PYTHONPATH?\n"
                % (generator_module, e.args))
             return -1
         # FIXIT: exception
         try:
             gen = getattr(mod, "gen")
-        except AttributeError,e:
+        except AttributeError as e:
             Es("failed to obtain generator function from module %s %s\n"
                % (generator_module, e.args))
             return -1
         try:
             f = gen()
-        except Exception,e:
+        except Exception as e:
             Es("error while calling %s.gen():\n\n%s\n"
                % (generator_module, self.get_exception_trace()))
             return -1
@@ -1415,13 +1415,13 @@ class work_stream_generator(work_stream_base):
         for i in range(100):
             try:
                 x = self.fun_generator.next()
-            except StopIteration,e:
+            except StopIteration as e:
                 # call .close() later after we unregister
                 # the descriptor
                 # self.close()
                 self.closed = 1
                 break
-            except Exception,e:
+            except Exception as e:
                 Es("Error while calling next() on %s.gen():\n\n%s\n"
                    % (self.generator_module, self.get_exception_trace()))
                 # ditto
@@ -1463,7 +1463,7 @@ class work_stream_generator(work_stream_base):
             try:
                 self.fun_finish(work, exit_status, term_sig, man_name)
                 return 0
-            except Exception,e:
+            except Exception as e:
                 Es("Error while calling fin() on %s.fin():\n\n%s\n"
                    % (self.generator_module, self.get_exception_trace()))
                 self.close()
@@ -2518,7 +2518,7 @@ class job_scheduler(gxpc.cmd_interpreter):
         if dire == "": return 0
         try:
             os.makedirs(dire)
-        except OSError,e:
+        except OSError as e:
             if e.args[0] == errno.EEXIST:
                 pass
             else:
@@ -2537,7 +2537,7 @@ class job_scheduler(gxpc.cmd_interpreter):
         log = os.path.join(self.conf.state_dir, self.conf.log_file)
         try:
             self.logfp = open(log, "wb")
-        except Exception,e:
+        except Exception as e:
             Es("%s: %s : %s\n" % (self.prog, log, e.args,))
             return -1
         if self.logfp:
@@ -2608,7 +2608,7 @@ class job_scheduler(gxpc.cmd_interpreter):
         if m is None: return -1
         try:
             return float(m.group(1))
-        except ValueError,e:
+        except ValueError as e:
             return -1
 
     def record_loadavg(self, cur_time, force):
@@ -2623,7 +2623,7 @@ class job_scheduler(gxpc.cmd_interpreter):
         fp.close()
         try:
             result = float(result)
-        except ValueError,e:
+        except ValueError as e:
             return -1
         return result / 1024.0
 
@@ -2644,7 +2644,7 @@ class job_scheduler(gxpc.cmd_interpreter):
             # make it MB
             return map((lambda s: float(s) / 1024.0), 
                        m.group(1,2,3,4,5,6))
-        except ValueError,e:
+        except ValueError as e:
             return (-1,-1,-1,-1,-1,-1)
         
 

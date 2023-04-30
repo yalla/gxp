@@ -23,7 +23,7 @@ import fcntl,os,re,socket,string,sys
 try:
     import ioman
     # gxp3 directory is in your PYTHONPATH
-except ImportError,e:
+except ImportError as e:
     # gxp3 directory not in your PYTHONPATH
     # perhaps run as a standalone program
     ioman = None
@@ -47,7 +47,7 @@ class ifconfig:
         A,B,C,D = m.group(1,2,3,4)
         try:
             return string.atoi(A),string.atoi(B),string.atoi(C),string.atoi(D)
-        except ValueError,e:
+        except ValueError as e:
             return None
 
     def is_localhost_ip_addr(self, addr):
@@ -165,7 +165,7 @@ class ifconfig:
         hostname = socket.gethostname()
         try:
             can_name,aliases,ip_addrs = socket.gethostbyname_ex(hostname)
-        except socket.error,e:
+        except socket.error as e:
             return []
         return ip_addrs
         
@@ -265,7 +265,7 @@ class ifconfig:
             else:
                 try:
                     c = re.compile(pat)
-                except re.error,e:
+                except re.error as e:
                     msg = ("invalid addr_prio %s in %s %s"
                            % (pat, addr_prio_str, e.args))
                     return None,msg

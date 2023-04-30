@@ -109,7 +109,7 @@ def condor_submit_sh(shell_script, condor_submit, condor_opts,
         os.dup2(r, 0)
         try:
             os.execvp(cmd[0], cmd)
-        except OSError,e:
+        except OSError as e:
             if e.args[0] == errno.ENOENT:
                 Es(("%s : could not execute '%s' (perhaps not in your PATH)\n"
                     % (sys.argv[0], cmd[0])))

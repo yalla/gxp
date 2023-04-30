@@ -199,7 +199,7 @@ class graph_parse:
         if dbg>=2: Es("parse_float\n")
         try:
             x = string.atof(self.tok)
-        except ValueError,e:
+        except ValueError as e:
             self.parse_error("<float>")
         self.next_token()
         return x
@@ -318,7 +318,7 @@ class sock:
         while r < n:
             try:
                 m = self.recv(n - r)
-            except socket.error,e:
+            except socket.error as e:
                 if dbg>=1:
                     Es("%s : %s\n" % (self.nickname, e.args))
                 self.close()
@@ -393,7 +393,7 @@ class sock_tcp(sock):
         so.setblocking(0)
         try:
             so.connect((self.addrs[0],self.port))
-        except socket.error,e:
+        except socket.error as e:
             if e.args[0] != errno.EINPROGRESS: raise
         self.so = so
 
@@ -609,7 +609,7 @@ class pmpi:
         """
         try:
             return self.socks[to][0].send(m)
-        except socket.error,e:
+        except socket.error as e:
             if e.args[0] != errno.EAGAIN: raise
             return 0
 
@@ -619,7 +619,7 @@ class pmpi:
         """
         try:
             return self.socks[fr][0].recv(n)
-        except socket.error,e:
+        except socket.error as e:
             if e.args[0] != errno.EAGAIN: raise
             return ""
 

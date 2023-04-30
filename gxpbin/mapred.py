@@ -370,7 +370,7 @@ class reducers:
     def ensure_dir(self, d):
         try:
             os.makedirs(d)
-        except OSError,e:
+        except OSError as e:
             if e.args[0] != errno.EEXIST: raise
             
     def ensure_open(self):
@@ -1016,7 +1016,7 @@ class map_reduce_scheduler:
         else:
             try:
                 [ work_idx,man_name,exit_status,term_sig ] = rest.split(None, 3)
-            except ValueError,e:
+            except ValueError as e:
                 Es("%s\n" % content)
                 raise e
             if exit_status == "-":

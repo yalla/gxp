@@ -98,7 +98,7 @@ class ring_connector:
         pat = None
         try:
             pat = re.compile(src_host_regexp)
-        except Exception,e:
+        except Exception as e:
             if self.exec_idx == 0:
                 Es("bcp: wrong src_host_regexp %s %s\n" \
                    % (src_host_regexp, e,args))
@@ -230,7 +230,7 @@ class ring_connector:
         try:
             # wfd = os.open(name, os.O_CREAT|os.O_EXCL)
             os.mkdir(name)
-        except OSError,e:
+        except OSError as e:
             if e.args[0] == errno.EEXIST:
                 if dbg>=3:
                     Es("%s : %s exists %s\n" % \
@@ -342,7 +342,7 @@ class ring_connector:
             try:
                 # try to increase up to sz
                 so.setsockopt(level, buftype, sz)
-            except socket.error,e:
+            except socket.error as e:
                 if e.args[0] == errno.ENOBUFS:
                     sz = (ok + sz) / 2
                 else:

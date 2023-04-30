@@ -379,7 +379,7 @@ class GridMount:
         if not self.dryrun:
             try:
                 os.makedirs(path)
-            except OSError, err:
+            except OSError as err:
                 if err.errno != errno.EEXIST: #TODO: check if it is a file
                     es("%s: failed to create %s: %s\n" % \
                        (self.hostname, path, os.strerror(err.errno)))

@@ -414,7 +414,7 @@ class ProcManager:
                 Es("Info: lanuch the command")
             try:
                 os.execvp(cmd, args)
-            except Exception, e:
+            except Exception as e:
                 Es("Error: cannot execute command %s\n"%(cmd))
                 Es("      %s\n"%(str(e)))
             # Cannot reach here

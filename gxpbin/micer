@@ -521,7 +521,7 @@ class ProcManager:
     def kill(self, pid, signal):
         try:
             os.kill(pid, signal)
-        except OSError, (err, str):
+        except OSError as err:
             if err == errno.ESRCH:
                 if pid < 0:
                     pid = -pid
@@ -559,7 +559,7 @@ class ProcManager:
                 Es("Info: lanuched\n")
             try:
                 os.execvp(cmd, args)
-            except Exception, e:
+            except Exception as e:
                 Es("Error: cannot execute command %s\n"%(cmd))
                 Es("      %s\n"%(str(e)))
             # Cannot reach here

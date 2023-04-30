@@ -197,7 +197,7 @@ class PyFileSystemBenchmark:
         if not self.dryrun:
             try:
                 os.makedirs(path)
-            except OSError, err:
+            except OSError as err:
                 if err.errno != errno.EEXIST: #TODO: check if it is a file
                     es("failed to create %s: %s\n" % \
                        (path, os.strerror(err.errno)))
@@ -1321,7 +1321,7 @@ def parse_argv(argv):
                 opts.opset = map(lambda x:OPSET_IO[x-1], opts.test)
             elif opts.mode == 'meta':
                 opts.opset = map(lambda x:OPSET_META[x-1], opts.test)
-        except IndexError, err:
+        except IndexError as err:
             es("Unknown test operation\n")
             sys.exit(1)
 

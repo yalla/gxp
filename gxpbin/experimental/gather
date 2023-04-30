@@ -149,7 +149,7 @@ class Socket:
                 self.sock.connect(self.peer)
                 #if self.sock is not None:
                 return True
-            except socket.error, se:
+            except socket.error as se:
                 r = random.random()
                 if debug >= 1:
                     M("Try to connect after %d sec\n"%r)
@@ -222,7 +222,7 @@ class ServerSocket:
                 if debug >= 2:
                     M("Binded on %d\n"%self.port)
                 return
-            except socket.error, msg:
+            except socket.error as msg:
                 #M("Err: on bind(): %s\n"%msg)
                 continue
             break
@@ -233,7 +233,7 @@ class ServerSocket:
     def bind(self, port):
         try:
             self.sock.bind((socket.gethostbyname(socket.gethostname()), port))
-        except socket.error, msg:
+        except socket.error as msg:
             #raise Exception("Failed to bind at %d"%(port))
             Es("*** Error on the server(#00): Failed to bind on the port %d\n"%(port))
             sys.exit(1)
@@ -374,7 +374,7 @@ class Server:
 
             try:
                 fp.write(X)
-            except IOError, e:
+            except IOError as e:
                 """21:(s) target directory is full"""
                 M("Server(#21): Failed to write (hostname=%s, fn=%s)\n"%(my_hostname, fn))
                 sock.close()
@@ -543,7 +543,7 @@ def main():
             dest_hostname,dest_port,dest_dirname = A
             dest_port = safe_atoi(dest_port)
             return src_dirname,dest_hostname,dest_port,dest_dirname, force_flag
-        except Exception, e:
+        except Exception as e:
             M("%s\n"%str(e))
             usage()
             sys.exit(1)

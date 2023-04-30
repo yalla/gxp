@@ -354,7 +354,7 @@ class S3IOBenchmark:
                     cb=None, num_cb=10, policy=None, md5=None, reduced_redundancy=True,
                     encrypt_key=False)
                 signal.alarm(0)
-            except Exception, msg:
+            except Exception as msg:
                 self.info("Timed out!!")
                 signal.alarm(0)
                 continue

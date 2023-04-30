@@ -56,7 +56,7 @@ def submit(so_name, cmd):
     so = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     try:
         so.connect(so_name)
-    except socket.error,e:
+    except socket.error as e:
         x = e.args[0]
         if x == errno.ECONNREFUSED or x == errno.ENOENT:
             # Es("mksh: could not connect to job scheduler %s\n" % (e.args,))

@@ -574,7 +574,7 @@ def parse_argv(argv):
                 opts.opset = map(lambda x:OPSET_IO[x-1], opts.test)
             if opts.mode == 'meta':
                 opts.opset = map(lambda x:OPSET_META[x-1], opts.test)
-        except IndexError, err:
+        except IndexError as err:
             errstr = "error: unknown test operation\n"
             return None, errstr
 

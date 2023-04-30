@@ -112,7 +112,7 @@ class cmd_opts:
         short,long = self.get_options()
         try:
             opts,args = getopt.getopt(argv, short, long)
-        except getopt.error,e:
+        except getopt.error as e:
             self.Es("%s\n" % e.args[0])
             return -1
         for opt,arg in opts:

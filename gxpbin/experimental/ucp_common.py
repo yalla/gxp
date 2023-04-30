@@ -149,7 +149,7 @@ class ifconfig:
         A,B,C,D = m.group(1,2,3,4)
         try:
             return string.atoi(A),string.atoi(B),string.atoi(C),string.atoi(D)
-        except ValueError,e:
+        except ValueError as e:
             return None
 
     def is_global_ip_addr(self, addr):
@@ -233,7 +233,7 @@ class ifconfig:
             hostname = hint
         try:
             can_name,aliases,ip_addrs = socket.gethostbyname_ex(hostname)
-        except socket.error,e:
+        except socket.error as e:
             return []
         return ip_addrs
         
@@ -316,7 +316,7 @@ class Comm:
             ilen = struct.unpack("i",alen)[0]
             msg = os.read(self.from_fno, ilen)
             return msg
-        except Exception, e:
+        except Exception as e:
             M(str(e))
             #M("MW Error\n")
             sys.exit(1)

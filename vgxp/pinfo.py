@@ -255,7 +255,7 @@ class pinfo_common:
         fp = None
         try:
             fp = open ( '/proc/vmstat', 'r' )
-        except IOError,(err,desc):
+        except IOError as err:
             if err == errno.ENOENT:
                 pass
             else:
@@ -450,7 +450,7 @@ def main ():
         random.seed ()
         time.sleep ( random.random () * poll_interval )
         pinfo_common ().main_loop ()
-    except IOError,(err,desc):
+    except IOError as err:
         if err == errno.EPIPE:
             pass
         else:
