@@ -7,7 +7,7 @@ def get_this_file():
        len(sys.argv) > 0 and len(sys.argv[0]) > 0:
         # run from command line (python .../gxpd.py)
         file = sys.argv[0]
-    elif g.has_key("__file__"):
+    elif "__file__" in g.keys():
         # appears this has been loaded as a module
         file = g["__file__"]
         # if it is .pyc file, get .py instead

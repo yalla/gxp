@@ -248,7 +248,8 @@ class installer(expectd.expectd):
         it returns "/a", "/b/c"
         """
         for top in top_dirs:
-            if string.find(path, top) == 0:
+            #if string.find(path, top) == 0:
+            if path.find(top) == 0:
                 return top,path[len(top) + 1:]
         return None,None
         
@@ -351,7 +352,7 @@ class installer(expectd.expectd):
             mode = os.stat(path)[0]
             # see what kind of file is it
             if stat.S_ISREG(mode):
-                content = base64.encodestring(self.read_file(path))
+                content = base64.b64encode(self.read_file(path))
                 inst_data.append((inst_path,
                                   "REG", stat.S_IMODE(mode), content))
                 inst_data_log.append((inst_path,
@@ -487,9 +488,9 @@ check_install_exec(python=%r,
             P.append(p)
         if len(P) > 0: 
             p = (' else echo no python interpreter found "(%s)" 1>&2 ; fi'
-                 % string.join(pythons, ","))
+                 % ','.join(pythons))
             P.append(p)
-        return ("/bin/sh -c '%s'" % string.join(P, ""))
+        return ("/bin/sh -c '%s'" % ''.join(P))
 
     def spawn_gxpd(self, O):
         """

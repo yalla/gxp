@@ -81,7 +81,7 @@ class logger:
         if self.fd is None:
             self.fd = os.open(self.filename,
                               os.O_CREAT|os.O_WRONLY|os.O_TRUNC,
-                              0644)
+                              0o0644)
             portability.set_close_on_exec_fd(self.fd, 1)
         assert self.fd is not None
         if self.header is not None:
@@ -113,7 +113,7 @@ def apply_no_intr(f, args):
     keyboard = 0
     for i in range(0, 500):
         try:
-            return apply(f, args)
+            return f(*args)
         except EnvironmentError as e:
             pass
         except socket.error as e:
@@ -188,7 +188,7 @@ def mk_non_interruptible_socket(af, type):
 
 class non_interruptible_select:
     def select(self, R, W, E, T=None):
-	if T is None:
+        if T is None:
             return apply_no_intr(select.select, (R, W, E))
         else:
             return apply_no_intr(select.select, (R, W, E, T))
@@ -252,7 +252,7 @@ class portability_class:
         self.F_GETFD = fcntl.F_GETFD
         self.F_SETFD = fcntl.F_SETFD
         ok = 0
-        if fcntl.__dict__.has_key("FD_CLOEXEC"):
+        if "FD_CLOEXEC" in fcntl.__dict__.keys():
             self.FD_CLOEXEC = fcntl.FD_CLOEXEC
             ok = 1
         if ok == 0:
@@ -1151,12 +1151,12 @@ class rchannel(channel):
         A tuple is either ('*',), ('M',), ('SZ', n),
         ('RE', regexp, max_len).
         """
-        timeout=INF
+        timeout=float('inf')
         expected_ = []
         for e in expected:
-            if type(e) is types.StringType:
+            if type(e) == str:
                 ex = pattern_searcher_exact(e)
-            elif type(e) is types.TupleType:
+            elif type(e) == tuple:
                 kind = e[0]
                 if kind == "*":
                     # ("*",)       anything
@@ -1877,12 +1877,12 @@ class process_base:
         self.r_channels_rev = {}        # channel -> name
         
     def add_r_channel(self, ch, name):
-        assert not self.r_channels_rev.has_key(ch)
+        assert not ch in self.r_channels_rev.keys()
         self.r_channels[name] = ch
         self.r_channels_rev[ch] = name
 
     def add_w_channel(self, ch, name):
-        assert not self.w_channels_rev.has_key(ch)
+        assert not ch in self.w_channels_rev.keys()
         self.w_channels[name] = ch
         self.w_channels_rev[ch] = name
 
@@ -1993,9 +1993,9 @@ class child_process(process_base):
         safe = {}
         for pipe,parent_use,child_use in pipes:
             for mode,name in child_use:
-                if protected.has_key(name):
+                if name in protected.keys():
                     p = protected[name]
-                    if not safe.has_key(p):
+                    if not p in safe.keys():
                         p.child_dup()
                         safe[p] = 1
                 pipe.child_dup2(name, mode)
@@ -2275,23 +2275,23 @@ class ioman:
 
     def mark_dormant(self, ch):
         if 0: assert self.all_channels.has_key(ch)
-        if self.hot_channels.has_key(ch):
+        if ch in self.hot_channels.keys():
             del self.hot_channels[ch]
-        if self.cold_channels.has_key(ch):
+        if ch in self.cold_channels.keys():
             del self.cold_channels[ch]
 
     def mark_cold(self, ch):
         if 0: assert self.all_channels.has_key(ch)
-        if self.hot_channels.has_key(ch):
+        if ch in self.hot_channels.keys():
             del self.hot_channels[ch]
-        if not self.cold_channels.has_key(ch):
+        if not ch in self.cold_channels.keys():
             self.cold_channels[ch] = 1
 
     def mark_hot(self, ch):
-        if 0: assert self.all_channels.has_key(ch)
-        if not self.hot_channels.has_key(ch):
+        if 0: assert ch in self.all_channels.keys()
+        if not ch in self.hot_channels.keys():
             self.hot_channels[ch] = 1
-        if not self.cold_channels.has_key(ch):
+        if not ch in self.cold_channels.keys():
             self.cold_channels[ch] = 1
 
     def get_all_channels(self):
@@ -2409,7 +2409,7 @@ class ioman:
         Y = []                     # channels having pending events
         R = []                     # channels to check for readability
         W = []                     # channels to check for writability
-        T = INF                    # earliest time limit
+        T = float('inf')           # earliest time limit
         timelimit_table = {}
         if hot_only:
             channels = self.hot_channels
@@ -2444,8 +2444,8 @@ class ioman:
                     R.append(ch)
                 # calc earliest timelimit
                 T = min(T, ch.x_timelimit)
-                if T == ch.x_timelimit != INF:
-                    if not timelimit_table.has_key(ch.x_timelimit):
+                if T == ch.x_timelimit != float('inf'):
+                    if not ch.x_timelimit in timelimit_table.keys():
                         timelimit_table[ch.x_timelimit] = []
                     timelimit_table[ch.x_timelimit].append(ch)
         if len(R) + len(W) + len(Y) == 0: return -1

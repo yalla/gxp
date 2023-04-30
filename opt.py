@@ -147,14 +147,14 @@ class cmd_opts:
                     long_opts.append("%s" % oo)
                 else:                   # want arg (--file file)
                     long_opts.append("%s=" % oo)
-        return string.join(short_opts),long_opts
+        return ''.join(short_opts),long_opts
             
     def Es(self, s):
         os.write(2, s)
 
     def safe_atoi(self, s, defa):
         try:
-            return string.atoi(s)
+            return int(s)
         except ValueError:
             return defa
 

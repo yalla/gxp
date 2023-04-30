@@ -55,7 +55,8 @@ def import_safe_pickler():
         return pickle
 
 pickler = import_safe_pickler()
-import cStringIO,errno,fcntl,glob,random,re
+from io import StringIO as cStringIO
+import errno,fcntl,glob,random,re
 import select,signal,socket,stat # shlex
 import string,time,threading,types,copy
 import opt,gxpm,this_file
